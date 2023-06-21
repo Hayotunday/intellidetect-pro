@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	@apply m-0;
+}
+
+.blue-gradient {
+	@apply bg-gradient-to-r from-blue-one via-blue-two to-blue-three;
+}
+
+.bg-gradient {
+	@apply bg-gradient-to-b from-blue-one via-blue-two to-blue-three;
+}
+
+.position {
+	top: calc(50vh - (/* height */ 320px / 2));
+	left: calc(50vw - (/* width */ 500px / 2));
+}
