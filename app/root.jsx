@@ -72,7 +72,7 @@ export default function Root({ children }) {
 											Dashboard
 										</div>
 									</Link>
-									<Link href={"/fraudulent-transaction"} className="w-full">
+									<Link href={"/fraudulent"} className="w-full">
 										<div
 											className={
 												pathname === "/fraudulent-transaction"
