@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -17,25 +18,27 @@ export default function Root({ children }) {
 	const router = useRouter();
 	const pathname = usePathname();
 
-	const isLoggedIn =
-		window.localStorage.getItem("IntelliToken") === undefined ||
-		(window.localStorage.getItem("IntelliToken") === null
-			? ""
-			: window.localStorage.getItem("IntelliToken"));
+	useEffect(() => {
+		const isLoggedIn =
+			window.localStorage.getItem("IntelliToken") === undefined ||
+			(window.localStorage.getItem("IntelliToken") === null
+				? ""
+				: window.localStorage.getItem("IntelliToken"));
 
-	if (
-		isLoggedIn === "" &&
-		pathname !== "/login" &&
-		pathname !== "/signup" &&
-		pathname !== "/signup/stage-two" &&
-		pathname !== "/signup/stage-three" &&
-		pathname !== "/signup/stage-four" &&
-		pathname !== "/signup/final-stage" &&
-		pathname !== "/password/forgot" &&
-		pathname !== "/password/create"
-	) {
-		return router.push("/login");
-	}
+		if (
+			isLoggedIn === "" &&
+			pathname !== "/login" &&
+			pathname !== "/signup" &&
+			pathname !== "/signup/stage-two" &&
+			pathname !== "/signup/stage-three" &&
+			pathname !== "/signup/stage-four" &&
+			pathname !== "/signup/final-stage" &&
+			pathname !== "/password/forgot" &&
+			pathname !== "/password/create"
+		) {
+			return router.push("/login");
+		}
+	}, []);
 
 	return (
 		<Provider store={store}>

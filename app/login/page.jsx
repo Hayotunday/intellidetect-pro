@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,11 +12,19 @@ import { update } from "@redux/company";
 import Input from "@components/Input";
 
 const Login = () => {
+	const [dimension, setDimension] = useState({ height: 0, width: 0 });
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const router = useRouter();
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const getGlobal = async () => {
+			setDimension({ height: window.innerHeight, width: window.innerWidth });
+		};
+		getGlobal();
+	}, []);
 
 	var globalWidth = global.innerWidth;
 	var globalHeight = global.innerHeight;
