@@ -11,12 +11,13 @@ import Input from "@components/Input";
 const Profile = () => {
 	const [data, setData] = useState({});
 	const [profile, setProfile] = useState({
-		name: "",
-		zip_code: "",
-		country: "",
-		address: "",
-		city: "",
+		name: null,
+		zip_code: null,
+		country: null,
+		address: null,
+		city: null,
 	});
+	const [editted, setEditted] = useState(false);
 	const [load, setLoad] = useState(true);
 	const [email, setEmail] = useState("");
 	const [oldPass, setOldPass] = useState("");
@@ -24,7 +25,7 @@ const Profile = () => {
 
 	useEffect(() => {
 		const getProfile = async () => {
-			const token = window.localStorage.getItem("userToken");
+			const token = window.localStorage.getItem("IntelliToken");
 			const config = {
 				headers: { Authorization: `Bearer ${token}` },
 			};
@@ -41,7 +42,6 @@ const Profile = () => {
 						});
 						setData(res.data);
 						setEmail(res.data.email);
-						console.log(res.data);
 					});
 			} catch (error) {
 				console.log(error);
@@ -50,6 +50,16 @@ const Profile = () => {
 
 		getProfile();
 	}, [load]);
+
+	useEffect(() => {
+		setEditted(
+			(profile.name !== data.fullname && profile.name !== "") ||
+				(profile.address !== data.address && profile.address !== "") ||
+				(profile.country !== data.country && profile.country !== "") ||
+				(profile.city !== data.city && profile.city !== "") ||
+				(profile.zip_code !== data.zip_code && profile.zip_code !== "")
+		);
+	}, [profile]);
 
 	return (
 		<div className="w-full px-16 py-2 flex flex-col">
@@ -165,38 +175,34 @@ const Profile = () => {
 								type={"text"}
 								value={profile.zip_code}
 							/>
-							{profile.address !== data.address &&
-								profile.city !== data.city &&
-								profile.country !== data.country &&
-								profile.name !== data.name &&
-								profile.zip_code !== data.zip_code && (
-									<button
-										type="button"
-										className="blue-gradient rounded-lg p-3 w-40 text-white-smoke text-center text-sm font-medium"
-										onClick={async () => {
-											const token = window.localStorage.getItem("userToken");
-											const config = {
-												headers: { Authorization: `Bearer ${token}` },
-											};
-											try {
-												await axios
-													.put(
-														"https://coinrimp-intelli.ygrehu.easypanel.host/profile",
-														profile,
-														config
-													)
-													.then((res) => {
-														console.log(res);
-														setLoad(!load);
-													});
-											} catch (error) {
-												console.log(error);
-											}
-										}}
-									>
-										Save Change
-									</button>
-								)}
+							{editted && (
+								<button
+									type="button"
+									className="blue-gradient rounded-lg p-3 w-40 text-white-smoke text-center text-sm font-medium"
+									onClick={async () => {
+										const token = window.localStorage.getItem("userToken");
+										const config = {
+											headers: { Authorization: `Bearer ${token}` },
+										};
+										try {
+											await axios
+												.put(
+													"https://coinrimp-intelli.ygrehu.easypanel.host/profile",
+													profile,
+													config
+												)
+												.then((res) => {
+													console.log(res);
+													setLoad(!load);
+												});
+										} catch (error) {
+											console.log(error);
+										}
+									}}
+								>
+									Save Change
+								</button>
+							)}
 						</div>
 					</div>
 				</form>

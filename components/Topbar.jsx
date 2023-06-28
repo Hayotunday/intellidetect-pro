@@ -14,7 +14,7 @@ const Topbar = () => {
 		<div className="sticky bg-inherit top-0 flex flex-row w-full py-5 px-14 justify-between z-50">
 			<label className="relative bg-blue-light rounded-lg flex w-[563px]">
 				<input
-					type="text"
+					type="search"
 					name="search"
 					id="search"
 					value={search}
