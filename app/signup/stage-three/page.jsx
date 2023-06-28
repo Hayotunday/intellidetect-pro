@@ -5,9 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useDispatch } from "react-redux";
+import { update } from "@redux/company";
+
 import Input from "@components/Input";
 
 const signupthree = () => {
+	const dispatch = useDispatch();
+
 	const [password, setPassword] = useState("");
 	const [confirm, setConfirm] = useState("");
 
@@ -70,16 +75,27 @@ const signupthree = () => {
 						/>
 					</div>
 
-					<div className="flex flex-col w-100 mt-5">
+					<div className="flex flex-col gap-3 w-100 mt-5">
 						<button
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
 							onClick={() => {
+								dispatch(
+									update({
+										password: password,
+										password_confirmation: confirm,
+									})
+								);
 								router.push("/signup/stage-four");
 							}}
 						>
 							Next
 						</button>
+						<Link href={"/signup/stage-two"}>
+							<div className="flex items-center justify-center h-14 w-full border border-grey rounded-lg text-grey">
+								Back
+							</div>
+						</Link>
 					</div>
 				</div>
 			</section>

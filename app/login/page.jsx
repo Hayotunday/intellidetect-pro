@@ -4,6 +4,10 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+
+import { useDispatch } from "react-redux";
+import { update } from "@redux/company";
 
 import Input from "@components/Input";
 
@@ -12,6 +16,7 @@ const login = () => {
 	const [password, setPassword] = useState("");
 
 	const router = useRouter();
+	const dispatch = useDispatch();
 
 	var globalWidth = global.innerWidth;
 	var globalHeight = global.innerHeight;
@@ -28,7 +33,7 @@ const login = () => {
 				/>
 			</section>
 			<section className="w-1/2 h-screen flex items-center justify-center">
-				<div className="">
+				<form className="">
 					<div className="flex flex-col gap-1">
 						<h1 className="text-black-screen text-3xl font-bold text-left">
 							Welcome back!
@@ -42,7 +47,7 @@ const login = () => {
 						<Input
 							inputholder={"Email"}
 							onChangeValue={(e) => {
-								setEmail(e.target.value);
+								setEmail(e.target.value.trim());
 							}}
 							placeholder={"enter your email"}
 							type={"email"}
@@ -54,7 +59,7 @@ const login = () => {
 						<Input
 							inputholder={"Password"}
 							onChangeValue={(e) => {
-								setPassword(e.target.value);
+								setPassword(e.target.value.trim());
 							}}
 							placeholder={"enter password"}
 							type={"text"}
@@ -63,10 +68,7 @@ const login = () => {
 						/>
 					</div>
 
-					<Link
-						href={"/password/forgot-password"}
-						className="flex justify-end mt-3"
-					>
+					<Link href={"/password/forgot"} className="flex justify-end mt-3">
 						<p className="text-right text-brown-orange text-base font-semibold w-fit">
 							Forgot Password?
 						</p>
@@ -75,10 +77,32 @@ const login = () => {
 					<div className="flex flex-col gap-3 w-100 mt-5">
 						<button
 							type="button"
-							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
-							onClick={() => {
-								router.push("/");
+							onClick={async () => {
+								if (email !== "" && password !== "") {
+									try {
+										await axios
+											.post(
+												"https://coinrimp-intelli.ygrehu.easypanel.host/login",
+												{
+													email,
+													password,
+												}
+											)
+											.then((res) => {
+												if (res.data) {
+													window.localStorage.setItem(
+														"IntelliToken",
+														res.data.token
+													);
+													router.push("/");
+												}
+											});
+									} catch (error) {
+										console.log(error);
+									}
+								}
 							}}
+							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
 						>
 							Sign In
 						</button>
@@ -88,7 +112,7 @@ const login = () => {
 							</div>
 						</Link>
 					</div>
-				</div>
+				</form>
 			</section>
 		</main>
 	);

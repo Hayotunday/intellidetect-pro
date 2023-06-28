@@ -1,25 +1,108 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
 import Input from "@components/Input";
 import AddCard from "@components/AddCard";
+import EditCard from "@components/EditCard";
 
 import { userArray } from "@utils/data";
-import EditCard from "@components/EditCard";
 
 const settings = () => {
 	const [name, setName] = useState("Ajani Ben Dara");
 	const [email, setEmail] = useState("ajaniben123456@gmail.com");
-	const [newEmail, setNewEmail] = useState("");
-	const [role, setRole] = useState("");
-	const [status, setStatus] = useState("");
 	const [website, setWebsite] = useState("www.ajaniben123456.com");
+
+	const [newEmail, setNewEmail] = useState("");
+	const [newMember, setNewMember] = useState({ name: "", email: "", role: "" });
+	const [members, setMembers] = useState("");
 	const [users, setUsers] = useState(userArray);
 	const [isAddVisible, setIsAddVisible] = useState(false);
 	const [isEditVisible, setIsEditVisible] = useState(false);
+
+	useEffect(() => {
+		const getProfile = async () => {
+			const token = window.localStorage.getItem("userToken");
+			const config = {
+				headers: { Authorization: `Bearer ${token}` },
+			};
+			try {
+				await axios
+					.get("https://coinrimp-intelli.ygrehu.easypanel.host/company", config)
+					.then((res) => {
+						console.log(res);
+						// setName(res.data.fullname);
+						// setData(res.data);
+						// setEmail(res.data.email);
+					});
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		const getMembers = async () => {
+			const token = window.localStorage.getItem("userToken");
+			const config = {
+				headers: { Authorization: `Bearer ${token}` },
+			};
+			try {
+				await axios
+					.get(
+						"https://coinrimp-intelli.ygrehu.easypanel.host/account/members",
+						config
+					)
+					.then((res) => {
+						console.log(res);
+					});
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		getProfile();
+		getMembers();
+	}, []);
+
+	const setMemberEmail = (e) => {
+		setNewMember({ ...newMember, email: e });
+	};
+	const setMemberName = (e) => {
+		setNewMember({ ...newMember, name: e });
+	};
+	const setMemberRole = (e) => {
+		setNewMember({ ...newMember, role: e });
+	};
+
+	const handleAddMember = async () => {
+		const token = window.localStorage.getItem("userToken");
+
+		const { name, email, role } = newMember;
+
+		if (name !== "" && email !== "") {
+			const config = {
+				headers: { Authorization: `Bearer ${token}` },
+			};
+			try {
+				await axios
+					.post(
+						"https://coinrimp-intelli.ygrehu.easypanel.host/account/member",
+						{ name: newMember.name, email: newMember.email },
+						config
+					)
+					.then((res) => {
+						console.log(res);
+						setNewMember({ name: "", email: "", role: "" });
+						setIsAddVisible(false);
+					});
+			} catch (error) {
+				console.log(error);
+			}
+		} else {
+			alert("Fill form completely to add new member");
+		}
+	};
 
 	return (
 		<div className="w-11/12 px-16 py-2 flex flex-col relative">
@@ -50,9 +133,32 @@ const settings = () => {
 							<button
 								type="button"
 								className="blue-gradient rounded-lg p-3 w-40 text-white-smoke text-center text-sm font-medium"
-								onClick={() => {}}
+								onClick={async () => {
+									const token = window.localStorage.getItem("userToken");
+
+									if (name !== "" && name !== data.fullname) {
+										const config = {
+											headers: { Authorization: `Bearer ${token}` },
+										};
+										try {
+											await axios
+												.put(
+													"https://coinrimp-intelli.ygrehu.easypanel.host/company",
+													{ name },
+													config
+												)
+												.then((res) => {
+													console.log(res);
+												});
+										} catch (error) {
+											console.log(error);
+										}
+									} else {
+										alert("Update Company name to be able to save changes");
+									}
+								}}
 							>
-								Change Password
+								Save changes
 							</button>
 						</div>
 					</div>
@@ -145,21 +251,13 @@ const settings = () => {
 
 			{isAddVisible && (
 				<AddCard
-					email={newEmail}
-					setEmail={setNewEmail}
-					role={role}
-					setRole={setRole}
-					handleClick={() => {
-						if (newEmail !== "" && role !== "") {
-							setIsAddVisible(false);
-							setUsers([
-								...users,
-								{ email: newEmail, role, status: "Pending" },
-							]);
-							setNewEmail("");
-							setRole("");
-						}
-					}}
+					email={newMember.email}
+					setEmail={setMemberEmail}
+					name={newMember.name}
+					setName={setMemberName}
+					role={newMember.role}
+					setRole={setMemberRole}
+					handleClick={handleAddMember}
 					handleCancel={() => {
 						setIsAddVisible(false);
 					}}

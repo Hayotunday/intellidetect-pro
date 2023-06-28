@@ -5,9 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useDispatch } from "react-redux";
+import { update } from "@redux/company";
+
 import Input from "@components/Input";
 
 const signupone = () => {
+	const dispatch = useDispatch();
+
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [website, setWebsite] = useState("");
@@ -80,7 +85,16 @@ const signupone = () => {
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
 							onClick={() => {
-								router.push("/signup/stage-two");
+								if (name !== "" && email !== "" && website !== "") {
+									dispatch(
+										update({
+											company_name: name,
+											company_email: email,
+											company_website: website,
+										})
+									);
+									router.push("/signup/stage-two");
+								}
 							}}
 						>
 							Create Account
@@ -91,6 +105,10 @@ const signupone = () => {
 							</div>
 						</Link>
 					</div>
+
+					<p className="w-full text-left font-medium text-sm mt-1">
+						* link must start with <b>https://</b>
+					</p>
 				</div>
 			</section>
 		</main>

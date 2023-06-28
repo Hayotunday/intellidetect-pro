@@ -4,11 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 import Input from "@components/Input";
 import VerifyMail from "@components/VerifyMail";
 
-const forgotpassword = () => {
+const forgot = () => {
 	const [email, setEmail] = useState("");
 	const [isVisible, setIsVisible] = useState(false);
 
@@ -29,7 +30,7 @@ const forgotpassword = () => {
 				/>
 			</section>
 			<section className="w-1/2 h-screen flex items-center justify-center">
-				<div className="bg-white p-10 flex flex-col items-center justify-center rounded-lg">
+				<form className="bg-white p-10 flex flex-col items-center justify-center rounded-lg">
 					<div className="flex flex-col gap-1 w-full items-start">
 						<h1 className="text-black-screen text-3xl font-bold text-left">
 							Forgot Password
@@ -55,8 +56,25 @@ const forgotpassword = () => {
 						<button
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
-							onClick={() => {
-								setIsVisible(true);
+							onClick={async () => {
+								if (email !== "") {
+									try {
+										await axios
+											.post(
+												"https://coinrimp-intelli.ygrehu.easypanel.host/password/forgot",
+												{ email }
+											)
+											.then((res) => {
+												if (res.data) {
+													setIsVisible(true);
+												}
+											});
+									} catch (error) {
+										console.log(error);
+									}
+								} else {
+									alert("Fill the form.");
+								}
 							}}
 						>
 							Reset Password
@@ -67,7 +85,7 @@ const forgotpassword = () => {
 							</div>
 						</Link>
 					</div>
-				</div>
+				</form>
 			</section>
 
 			{isVisible && (
@@ -76,11 +94,11 @@ const forgotpassword = () => {
 					handleClick={() => {
 						setIsVisible(false);
 					}}
-					route={"/password/create-password"}
+					route={"/password/create"}
 				/>
 			)}
 		</main>
 	);
 };
 
-export default forgotpassword;
+export default forgot;

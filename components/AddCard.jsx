@@ -8,6 +8,8 @@ import Dropdown from "./Dropdown";
 const AddCard = ({
 	email,
 	setEmail,
+	name,
+	setName,
 	handleClick,
 	role,
 	setRole,
@@ -15,7 +17,7 @@ const AddCard = ({
 }) => {
 	return (
 		<div className="h-screen w-screen bg-transparent flex top-1/4 left-1/4 absolute">
-			<div className="h-96 w-125 bg-white-smoke flex flex-col items-center justify-between p-12 rounded-lg shadow-2xl shadow-black">
+			<div className="h-100 w-125 bg-white-smoke flex flex-col items-center justify-between px-10 py-6 rounded-lg shadow-2xl shadow-black">
 				<button
 					type="button"
 					onClick={handleCancel}
@@ -32,6 +34,15 @@ const AddCard = ({
 					</p>
 				</div>
 				<div className="mb-7">
+					<Input
+						inputholder={"Name"}
+						onChangeValue={(e) => {
+							setName(e.target.value);
+						}}
+						placeholder={"enter name"}
+						type={"name"}
+						value={name}
+					/>
 					<Input
 						inputholder={"Email"}
 						onChangeValue={(e) => {

@@ -3,10 +3,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 import Input from "@components/Input";
 
-const createpassword = () => {
+const create = () => {
 	const [password, setPassword] = useState("");
 	const [confirm, setConfirm] = useState("");
 
@@ -27,7 +28,7 @@ const createpassword = () => {
 				/>
 			</section>
 			<section className="w-1/2 h-screen flex items-center justify-center">
-				<div className="bg-white p-10 flex flex-col items-center justify-center rounded-lg">
+				<form className="bg-white p-10 flex flex-col items-center justify-center rounded-lg">
 					<div className="flex flex-col gap-1 w-full items-start">
 						<h1 className="text-black-screen text-3xl font-bold text-left">
 							Create New Password
@@ -73,17 +74,38 @@ const createpassword = () => {
 						<button
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
-							onClick={() => {
-								router.push("/login");
+							onClick={async () => {
+								if (password !== "" && confirm !== "") {
+									if (password === confirm) {
+										try {
+											await axios
+												.post(
+													"https://coinrimp-intelli.ygrehu.easypanel.host/password/forgot",
+													{ token: "", password }
+												)
+												.then((res) => {
+													if (res.data) {
+														router.push("/login");
+													}
+												});
+										} catch (error) {
+											console.log(error);
+										}
+									} else {
+										alert("Password and Confirm password field not the same.");
+									}
+								} else {
+									alert("Fill the form.");
+								}
 							}}
 						>
 							Create Password
 						</button>
 					</div>
-				</div>
+				</form>
 			</section>
 		</main>
 	);
 };
 
-export default createpassword;
+export default create;

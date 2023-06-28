@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useDispatch, useSelector } from "react-redux";
+import { update } from "@redux/company";
+
 import Input from "@components/Input";
 
 const finalstage = () => {
-	const [link, setLink] = useState("");
+	const { company } = useSelector((state) => state);
+	const dispatch = useDispatch();
 
 	const router = useRouter();
 
@@ -47,11 +50,11 @@ const finalstage = () => {
 						<Input
 							inputholder={"Database link"}
 							onChangeValue={(e) => {
-								setLink(e.target.value);
+								dispatch(update({ database_link: e.target.value }));
 							}}
 							placeholder={"https://"}
 							type={"url"}
-							value={link}
+							value={company.database_link}
 						/>
 					</div>
 
@@ -59,8 +62,25 @@ const finalstage = () => {
 						<button
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
-							onClick={() => {
-								router.push("/");
+							onClick={async () => {
+								try {
+									await axios
+										.post(
+											"https://coinrimp-intelli.ygrehu.easypanel.host/register",
+											company
+										)
+										.then((res) => {
+											if (res.data) {
+												window.localStorage.setItem(
+													"IntelliToken",
+													res.data.token
+												);
+												router.push("/");
+											}
+										});
+								} catch (error) {
+									console.log(error);
+								}
 							}}
 						>
 							Submit

@@ -3,14 +3,22 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+import { useDispatch } from "react-redux";
+import { update } from "@redux/company";
 
 import Input from "@components/Input";
 import VerifyMail from "@components/VerifyMail";
 
 const signuptwo = () => {
+	const dispatch = useDispatch();
+
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [isVisible, setIsVisible] = useState(false);
+
+	const router = useRouter();
 
 	var globalWidth = global.innerWidth;
 	var globalHeight = global.innerHeight;
@@ -72,7 +80,14 @@ const signuptwo = () => {
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
 							onClick={() => {
-								setIsVisible(true);
+								// setIsVisible(true);
+								dispatch(
+									update({
+										admin_name: name,
+										admin_email: email,
+									})
+								);
+								router.push("/signup/stage-three");
 							}}
 						>
 							Next
