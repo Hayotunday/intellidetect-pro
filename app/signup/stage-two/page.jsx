@@ -5,17 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { update } from "@redux/company";
 
 import Input from "@components/Input";
 import VerifyMail from "@components/VerifyMail";
 
 const Signuptwo = () => {
+	const { admin_email, admin_name } = useSelector((state) => state.company);
 	const dispatch = useDispatch();
 
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
 	const [isVisible, setIsVisible] = useState(false);
 
 	const router = useRouter();
@@ -55,11 +54,11 @@ const Signuptwo = () => {
 						<Input
 							inputholder={"Personal Name"}
 							onChangeValue={(e) => {
-								setName(e.target.value);
+								dispatch(update({ admin_name: e.target.value }));
 							}}
 							placeholder={"personal name"}
 							type={"text"}
-							value={name}
+							value={admin_name}
 						/>
 					</div>
 
@@ -67,11 +66,11 @@ const Signuptwo = () => {
 						<Input
 							inputholder={"Personal Email"}
 							onChangeValue={(e) => {
-								setEmail(e.target.value);
+								dispatch(update({ admin_email: e.target.value }));
 							}}
 							placeholder={"personal email"}
 							type={"text"}
-							value={email}
+							value={admin_email}
 						/>
 					</div>
 
@@ -80,14 +79,11 @@ const Signuptwo = () => {
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
 							onClick={() => {
-								// setIsVisible(true);
-								dispatch(
-									update({
-										admin_name: name,
-										admin_email: email,
-									})
-								);
-								router.push("/signup/stage-three");
+								if (admin_name !== "" && admin_email !== "") {
+									router.push("/signup/stage-three");
+								} else {
+									alert("Please fill all fields completely to continue!");
+								}
 							}}
 						>
 							Next

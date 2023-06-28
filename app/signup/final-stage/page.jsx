@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { update } from "@redux/company";
@@ -58,28 +59,36 @@ const Finalstage = () => {
 						/>
 					</div>
 
+					<p className="w-full text-left font-medium text-sm mt-1">
+						* link must start with <b>https://</b>
+					</p>
+
 					<div className="flex flex-col gap-3 w-100 mt-5">
 						<button
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
 							onClick={async () => {
-								try {
-									await axios
-										.post(
-											"https://coinrimp-intelli.ygrehu.easypanel.host/register",
-											company
-										)
-										.then((res) => {
-											if (res.data) {
-												window.localStorage.setItem(
-													"IntelliToken",
-													res.data.token
-												);
-												router.push("/");
-											}
-										});
-								} catch (error) {
-									console.log(error);
+								if (company.database_link.startsWith("https://")) {
+									try {
+										await axios
+											.post(
+												"https://coinrimp-intelli.ygrehu.easypanel.host/register",
+												company
+											)
+											.then((res) => {
+												if (res.data) {
+													window.localStorage.setItem(
+														"IntelliToken",
+														res.data.token
+													);
+													router.push("/");
+												}
+											});
+									} catch (error) {
+										console.log(error);
+									}
+								} else {
+									alert("Please start link with https://");
 								}
 							}}
 						>

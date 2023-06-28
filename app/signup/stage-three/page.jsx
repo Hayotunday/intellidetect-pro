@@ -5,16 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { update } from "@redux/company";
 
 import Input from "@components/Input";
 
 const Signupthree = () => {
+	const { password, password_confirmation } = useSelector(
+		(state) => state.company
+	);
 	const dispatch = useDispatch();
-
-	const [password, setPassword] = useState("");
-	const [confirm, setConfirm] = useState("");
 
 	const router = useRouter();
 
@@ -53,7 +53,7 @@ const Signupthree = () => {
 						<Input
 							inputholder={"Create Password"}
 							onChangeValue={(e) => {
-								setPassword(e.target.value);
+								dispatch(update({ password: e.target.value }));
 							}}
 							placeholder={"enter password"}
 							type={"text"}
@@ -66,11 +66,11 @@ const Signupthree = () => {
 						<Input
 							inputholder={"Confirm Password"}
 							onChangeValue={(e) => {
-								setConfirm(e.target.value);
+								dispatch(update({ password_confirmation: e.target.value }));
 							}}
 							placeholder={"confirm password"}
 							type={"text"}
-							value={confirm}
+							value={password_confirmation}
 							secureText
 						/>
 					</div>
@@ -80,13 +80,15 @@ const Signupthree = () => {
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
 							onClick={() => {
-								dispatch(
-									update({
-										password: password,
-										password_confirmation: confirm,
-									})
-								);
-								router.push("/signup/stage-four");
+								if (password !== "" && password_confirmation !== "") {
+									if (password === password_confirmation) {
+										router.push("/signup/stage-four");
+									} else {
+										alert("Password and confirm password fields not the same!");
+									}
+								} else {
+									alert("Please fill all fields completely to continue!");
+								}
 							}}
 						>
 							Next

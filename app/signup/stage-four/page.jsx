@@ -5,16 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { update } from "@redux/company";
 
 import Input from "@components/Input";
 
 const Signupfour = () => {
+	const { member_email, member_name } = useSelector((state) => state.company);
 	const dispatch = useDispatch();
-
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
 
 	const router = useRouter();
 
@@ -53,11 +51,11 @@ const Signupfour = () => {
 						<Input
 							inputholder={"Full Name"}
 							onChangeValue={(e) => {
-								setName(e.target.value);
+								dispatch(update({ member_name: e.target.value }));
 							}}
 							placeholder={"enter name"}
 							type={"text"}
-							value={name}
+							value={member_name}
 						/>
 					</div>
 
@@ -65,11 +63,11 @@ const Signupfour = () => {
 						<Input
 							inputholder={"Email"}
 							onChangeValue={(e) => {
-								setEmail(e.target.value);
+								dispatch(update({ member_email: e.target.value }));
 							}}
 							placeholder={"enter email"}
 							type={"email"}
-							value={email}
+							value={member_email}
 						/>
 					</div>
 
@@ -78,13 +76,11 @@ const Signupfour = () => {
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
 							onClick={() => {
-								dispatch(
-									update({
-										member_name: name,
-										member_email: email,
-									})
-								);
-								router.push("/signup/final-stage");
+								if (member_name !== "" && member_email !== "") {
+									router.push("/signup/final-stage");
+								} else {
+									alert("Please fill all fields completely to continue!");
+								}
 							}}
 						>
 							Next

@@ -5,17 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { update } from "@redux/company";
 
 import Input from "@components/Input";
 
 const Signupone = () => {
+	const { company_email, company_name, company_website } = useSelector(
+		(state) => state.company
+	);
 	const dispatch = useDispatch();
-
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [website, setWebsite] = useState("");
 
 	const router = useRouter();
 
@@ -48,11 +47,11 @@ const Signupone = () => {
 						<Input
 							inputholder={"Company Name"}
 							onChangeValue={(e) => {
-								setName(e.target.value);
+								dispatch(update({ company_name: e.target.value }));
 							}}
 							placeholder={"company name"}
 							type={"text"}
-							value={name}
+							value={company_name}
 						/>
 					</div>
 
@@ -60,11 +59,11 @@ const Signupone = () => {
 						<Input
 							inputholder={"Company Email"}
 							onChangeValue={(e) => {
-								setEmail(e.target.value);
+								dispatch(update({ company_email: e.target.value }));
 							}}
 							placeholder={"company email"}
 							type={"text"}
-							value={email}
+							value={company_email}
 						/>
 					</div>
 
@@ -72,28 +71,35 @@ const Signupone = () => {
 						<Input
 							inputholder={"Company Website"}
 							onChangeValue={(e) => {
-								setWebsite(e.target.value);
+								dispatch(update({ company_website: e.target.value }));
 							}}
 							placeholder={"company website"}
 							type={"text"}
-							value={website}
+							value={company_website}
 						/>
 					</div>
+
+					<p className="w-full text-left font-medium text-sm mt-1">
+						* link must start with <b>https://</b>
+					</p>
 
 					<div className="flex flex-col gap-3 w-100 mt-5">
 						<button
 							type="button"
 							className="flex items-center justify-center h-14 w-full blue-gradient rounded-lg text-white"
 							onClick={() => {
-								if (name !== "" && email !== "" && website !== "") {
-									dispatch(
-										update({
-											company_name: name,
-											company_email: email,
-											company_website: website,
-										})
-									);
-									router.push("/signup/stage-two");
+								if (
+									company_name !== "" &&
+									company_email !== "" &&
+									company_website !== ""
+								) {
+									if (company_website.startsWith("https://")) {
+										router.push("/signup/stage-two");
+									} else {
+										alert("Please start link with https://");
+									}
+								} else {
+									alert("Please fill form completely to create account");
 								}
 							}}
 						>
@@ -105,10 +111,6 @@ const Signupone = () => {
 							</div>
 						</Link>
 					</div>
-
-					<p className="w-full text-left font-medium text-sm mt-1">
-						* link must start with <b>https://</b>
-					</p>
 				</div>
 			</section>
 		</main>
