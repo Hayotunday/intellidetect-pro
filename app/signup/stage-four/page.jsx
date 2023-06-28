@@ -10,7 +10,7 @@ import { update } from "@redux/company";
 
 import Input from "@components/Input";
 
-const signupfour = () => {
+const Signupfour = () => {
 	const dispatch = useDispatch();
 
 	const [name, setName] = useState("");
@@ -101,4 +101,4 @@ const signupfour = () => {
 	);
 };
 
-export default signupfour;
+export default Signupfour;

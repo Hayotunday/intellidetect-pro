@@ -11,7 +11,7 @@ import { update } from "@redux/company";
 import Input from "@components/Input";
 import VerifyMail from "@components/VerifyMail";
 
-const signuptwo = () => {
+const Signuptwo = () => {
 	const dispatch = useDispatch();
 
 	const [name, setName] = useState("");
@@ -114,4 +114,4 @@ const signuptwo = () => {
 	);
 };
 
-export default signuptwo;
+export default Signuptwo;

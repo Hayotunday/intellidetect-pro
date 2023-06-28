@@ -7,7 +7,7 @@ import axios from "axios";
 
 import Input from "@components/Input";
 
-const create = () => {
+const CreatePassword = () => {
 	const [password, setPassword] = useState("");
 	const [confirm, setConfirm] = useState("");
 
@@ -108,4 +108,4 @@ const create = () => {
 	);
 };
 
-export default create;
+export default CreatePassword;

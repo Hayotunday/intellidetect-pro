@@ -10,7 +10,7 @@ import { update } from "@redux/company";
 
 import Input from "@components/Input";
 
-const signupthree = () => {
+const Signupthree = () => {
 	const dispatch = useDispatch();
 
 	const [password, setPassword] = useState("");
@@ -103,4 +103,4 @@ const signupthree = () => {
 	);
 };
 
-export default signupthree;
+export default Signupthree;

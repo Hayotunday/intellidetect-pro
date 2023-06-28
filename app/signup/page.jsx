@@ -10,7 +10,7 @@ import { update } from "@redux/company";
 
 import Input from "@components/Input";
 
-const signupone = () => {
+const Signupone = () => {
 	const dispatch = useDispatch();
 
 	const [name, setName] = useState("");
@@ -115,4 +115,4 @@ const signupone = () => {
 	);
 };
 
-export default signupone;
+export default Signupone;

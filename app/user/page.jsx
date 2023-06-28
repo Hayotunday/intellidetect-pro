@@ -4,7 +4,7 @@ import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
 import OverviewCard from "@components/OverviewCard";
 
-const user = () => {
+const User = () => {
 	return (
 		<div className="w-full px-16 py-8 flex flex-col">
 			<h1 className="text-left text-2xl text-grey font-bold mb-5 flex flex-row gap-3 items-center">
@@ -33,4 +33,4 @@ const user = () => {
 	);
 };
 
-export default user;
+export default User;

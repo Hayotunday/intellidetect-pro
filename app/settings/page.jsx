@@ -11,7 +11,7 @@ import EditCard from "@components/EditCard";
 
 import { userArray } from "@utils/data";
 
-const settings = () => {
+const Settings = () => {
 	const [name, setName] = useState("Ajani Ben Dara");
 	const [email, setEmail] = useState("ajaniben123456@gmail.com");
 	const [website, setWebsite] = useState("www.ajaniben123456.com");
@@ -284,4 +284,4 @@ const settings = () => {
 	);
 };
 
-export default settings;
+export default Settings;

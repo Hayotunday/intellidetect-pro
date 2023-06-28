@@ -9,7 +9,7 @@ import axios from "axios";
 import Input from "@components/Input";
 import VerifyMail from "@components/VerifyMail";
 
-const forgot = () => {
+const ForgotPassword = () => {
 	const [email, setEmail] = useState("");
 	const [isVisible, setIsVisible] = useState(false);
 
@@ -101,4 +101,4 @@ const forgot = () => {
 	);
 };
 
-export default forgot;
+export default ForgotPassword;

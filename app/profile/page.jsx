@@ -8,7 +8,7 @@ import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
 import Input from "@components/Input";
 
-const profile = () => {
+const Profile = () => {
 	const [data, setData] = useState({});
 	const [profile, setProfile] = useState({
 		name: "",
@@ -296,4 +296,4 @@ const profile = () => {
 	);
 };
 
-export default profile;
+export default Profile;

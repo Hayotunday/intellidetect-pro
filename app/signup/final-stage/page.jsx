@@ -9,7 +9,7 @@ import { update } from "@redux/company";
 
 import Input from "@components/Input";
 
-const finalstage = () => {
+const Finalstage = () => {
 	const { company } = useSelector((state) => state);
 	const dispatch = useDispatch();
 
@@ -97,4 +97,4 @@ const finalstage = () => {
 	);
 };
 
-export default finalstage;
+export default Finalstage;
