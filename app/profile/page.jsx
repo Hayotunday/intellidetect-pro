@@ -221,7 +221,7 @@ const Profile = () => {
 					</div>
 				</div>
 
-				<div className="w-full flex flex-row justify-between items-start">
+				<div className="w-full flex flex-row justify-between mt-8 items-start">
 					<div className="">
 						<h1 className="text-black-screen text-left text-2xl font-bold">
 							Password
